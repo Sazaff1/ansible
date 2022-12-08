@@ -1,2 +1,7 @@
-192.168.64.2
-192.168.64.3
+ansible_connection=ssh
+ansible_user=debian
+ansible_ssh_pass=debian
+
+ansible_connection=ssh
+ansible_user=debian 
+ansible_ssh_pass=sazaff123
