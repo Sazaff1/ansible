@@ -4,12 +4,8 @@
   become: true
   tasks: 
 
-  - name: install apache2 package
+  - name: install apache2 and php packages for Ubuntu 
     apt:
       name: apache2
       state: absent
-
-  - name: add php support for apache
-    apt:
-      name: libapache2-mod-php
-      state: absent
+    when: ansible_distribution == "Ubuntu"
