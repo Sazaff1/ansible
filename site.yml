@@ -10,7 +10,33 @@
       upgrade: dist
       update_cache: yes
     when: ansible_distribution == "Ubuntu"
+
+- hosts: all 
+  become: true
+  tasks:
+
+  - name: create aidan user
+    tags: always
+    user:
+      name: aidan
+      groups: root
+
+  - name: add ssh key for aidan
+    tags: always
+    authorized_key:
+      user: aidan
+      key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDxB0hsMtCbbJQ6xEg7fzn5W+B6bDpQDc3FCNnPNhEFlnkbigepuVOsiEBM1+jNPRXSVr96NthNchbFSX9Mry+Vsp8blEQtnCo3EyrQ38A+sb2eX179pVaRIsOvfyVS54P8tg9+1684RGMfOvvqGl3pW2ZPAvLVDtZ3aK47jH6Qdrvwtk9XcuyQIg+03aT5t2mxQslypSiowfXqYnGTVs5pvbuP4a4yUftv1siLl7+gZISLhCmcXIbanThN1fUlyplbDA09sQK6Tyz5twaC9yoWy+B3otrT69wybNwyRYqcc7BR659ZBS80xgY7o/RiQUD68jzY4D2VYsIXm2iHMEl00GNZ1W2jh0TgWodESdLHJvHbYUdufBu/No+EUuOj9HJP7pVGvvVkuAfV3zHdNvANzF3Cqd4Afm/p3NKlifeeK3VPQx2AYCO7ZpJym/utBj0YyWflZ1M12M3VrndvLpK4Zz/aUL3PLYFQdC2CMLzTQVrLbJCtb53XaQ1cN8sw3iU= sazaffrahman@sazaffs-MacBook-Air.local" 
     
+
+  - name: add sudoers file for aidan
+    tags: always
+    copy:
+      src: sudoer_aidan
+      dest: /etc/sudoers.d/aidan
+      owner: root
+      group: root
+      mode: 0440
+  
 - hosts: web_servers
   become: true
   tasks:
