@@ -13,69 +13,23 @@
 
 - hosts: all 
   become: true
-  tasks:
+  roles:
+    - base
 
-  - name: create aidan user
-    tags: always
-    user:
-      name: aidan
-      groups: root
+- hosts: workstations
+  become: true
+  roles:
+    - workstations
 
-  - name: add ssh key for aidan
-    tags: always
-    authorized_key:
-      user: aidan
-      key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDxB0hsMtCbbJQ6xEg7fzn5W+B6bDpQDc3FCNnPNhEFlnkbigepuVOsiEBM1+jNPRXSVr96NthNchbFSX9Mry+Vsp8blEQtnCo3EyrQ38A+sb2eX179pVaRIsOvfyVS54P8tg9+1684RGMfOvvqGl3pW2ZPAvLVDtZ3aK47jH6Qdrvwtk9XcuyQIg+03aT5t2mxQslypSiowfXqYnGTVs5pvbuP4a4yUftv1siLl7+gZISLhCmcXIbanThN1fUlyplbDA09sQK6Tyz5twaC9yoWy+B3otrT69wybNwyRYqcc7BR659ZBS80xgY7o/RiQUD68jzY4D2VYsIXm2iHMEl00GNZ1W2jh0TgWodESdLHJvHbYUdufBu/No+EUuOj9HJP7pVGvvVkuAfV3zHdNvANzF3Cqd4Afm/p3NKlifeeK3VPQx2AYCO7ZpJym/utBj0YyWflZ1M12M3VrndvLpK4Zz/aUL3PLYFQdC2CMLzTQVrLbJCtb53XaQ1cN8sw3iU= sazaffrahman@sazaffs-MacBook-Air.local" 
-    
-
-  - name: add sudoers file for aidan
-    tags: always
-    copy:
-      src: sudoer_aidan
-      dest: /etc/sudoers.d/aidan
-      owner: root
-      group: root
-      mode: 0440
-  
 - hosts: web_servers
   become: true
-  tasks:
-  
-  - name: install apache and php for Ubuntu servers
-    tags: apache,apache2,ubuntu
-    apt:
-      name:
-        - apache2
-        - libapache2-mod-php
-      state: latest
-    when: ansible_distribution == "Ubuntu"
-
-  - name: copy default html file for site
-    tags: apache,apache2,ubuntu
-    copy:
-      src: default_site.html
-      dest: /var/www/html/index.html
-      owner: root
-      group: root
-      mode: 0644
+  roles:
+    - web_servers
 
 - hosts: db_servers
   become: true
-  tasks:
+  roles:
+    - db_servers
 
-  - name: install mariadb package (Ubuntu)
-    tags: db,mariadb,ubuntu
-    apt:
-      name: mariadb-server
-      state: latest
-    when: ansible_distribution == "Ubuntu"
 
-- hosts: maths_servers
-  become: true
-  tasks:
 
-  - name: install aribas package (Ubuntu)
-    apt:
-      name: aribas
-      state: latest
-    when: ansible_distribution == "Ubuntu"
